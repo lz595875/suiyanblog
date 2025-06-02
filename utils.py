@@ -44,7 +44,7 @@ def sync_to_remote_repo(path):
 
         # 2. 同步到远程仓库
         while True:
-            result = subprocess.run(["git", "push", "github", "main"])
+            result = subprocess.run(["git", "push", "github", "gh-pages"])
             if result.returncode == 0:
                 # 如果成功同步到远程仓库，退出内部循环
                 break
