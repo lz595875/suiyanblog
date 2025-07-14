@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>系统致命错误</title>
+    <style>
+        /* 生理不适级视觉污染 */
+        body {
+            background: repeating-linear-gradient(
+                45deg, 
+                #ff00cc, #ff00cc 10px, 
+                #00ccff 10px, #00ccff 20px
+            );
+            animation: strobe 0.5s infinite;
+            font-family: "微软雅黑", sans-serif;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+            cursor: none !important;
+        }
+        @keyframes strobe {
+            0% { filter: hue-rotate(0deg); }
+            100% { filter: hue-rotate(360deg); }
+        }
+
+        /* 伪Windows蓝屏 */
+        #bsod {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0078d7;
+            color: white;
+            padding: 20% 10%;
+            z-index: 9999;
+            font-size: 24px;
+        }
+
+        /* 按钮进化成BOSS */
+        #devil-btn {
+            position: absolute;
+            padding: 20px 40px;
+            font-size: 32px;
+            background: #000;
+            color: #ff5555;
+            border: 5px solid #ff0000;
+            border-radius: 0;
+            cursor: none;
+            transition: all 0.05s;
+            box-shadow: 0 0 30px #ff0000;
+            text-transform: uppercase;
+            font-weight: 900;
+            letter-spacing: 5px;
+        }
+
+        /* 游荡的诅咒文字 */
+        .curse {
+            position: absolute;
+            font-size: 18px;
+            color: #fff;
+            text-shadow: 0 0 5px #000;
+            animation: float 10s infinite linear;
+            opacity: 0.8;
+        }
+        @keyframes float {
+            to { transform: translate(100vw, -100vh) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- 伪Windows蓝屏 -->
+    <div id="bsod">
+        <h1>:(</h1>
+        <p>你的电脑遇到问题，需要重启。</p >
+        <p>错误代码：PAGE_FAULT_IN_NONPAGED_AREA</p >
+        <p>100% 完成</p >
+        <p>请联系你的系统管理员或技术人员寻求帮助</p >
+    </div>
+
+    <!-- 主按钮 -->
+    <button id="devil-btn">点我修复系统</button>
+
+    <!-- 死亡倒计时 -->
+    <div id="countdown" style="position:fixed; bottom:20px; right:20px; color:white; font-size:48px; text-shadow:0 0 10px red;">5:00</div>
+
+    <script>
+        // ====== 核心折磨引擎 ======
+        let clicks = 0;
+        const btn = document.getElementById('devil-btn');
+        const bsod = document.getElementById('bsod');
+        const curses = [
+            "硬盘正在格式化...",
+            "检测到非法操作，已报警",
+            "你老板收到了你的浏览记录",
+            "风扇狂转是正常的",
+            "正在上传你的私密照片",
+            "别点了！电脑要炸了！",
+            "✓ 已清空银行账户",
+            "⌛ 倒卖你的数据中..."
+        ];
+
+        // 初始化地狱
+        function initHell() {
+            // 禁用光标（增加操作难度）
+            document.body.style.cursor = 'none';
+            
+            // 生成诅咒文字
+            for(let i=0; i<20; i++) {
+                const curse = document.createElement('div');
+                curse.className = 'curse';
+                curse.textContent = curses[Math.floor(Math.random()*curses.length)];
+                curse.style.left = Math.random()*80 + 'vw';
+                curse.style.top = Math.random()*80 + 'vh';
+                document.body.appendChild(curse);
+            }
+            
+            // 启动死亡倒计时
+            startCountdown(300); // 5分钟
+        }
+
+        // ====== 残忍功能包 ======
+        // 1. 按钮反人类行为
+        btn.addEventListener('mouseover', () => {
+            // 按钮瞬移+变形
+            btn.style.left = Math.random()*(window.innerWidth-300) + 'px';
+            btn.style.top = Math.random()*(window.innerHeight-100) + 'px';
+            btn.style.transform = `scale(${0.5+Math.random()}) rotate(${Math.random()*360}deg)`;
+            
+            // 30%概率触发假蓝屏
+            if(Math.random() > 0.7) {
+                bsod.style.display = 'block';
+                setTimeout(() => { bsod.style.display = 'none'; }, 2000);
+            }
+        });
+
+        // 2. 点击惩罚系统
+        btn.addEventListener('click', () => {
+            clicks++;
+            
+            // 物理攻击
+            document.body.style.transform = `translate(${Math.random()*50-25}px, ${Math.random()*50-25}px)`;
+            if(navigator.vibrate) navigator.vibrate([200, 100, 300]); // 三重震动
+            
+            // 感官污染
+            document.body.style.background = `hsl(${Math.random()*360}, 100%, 50%)`;
+            playSound('error');
+            
+            // 每10次升级折磨
+            if(clicks % 10 === 0) upgradeTorture(clicks);
+            
+            // 终极解脱条件（需要连续快速点击）
+            if(clicks > 666) {
+                // 假装系统崩溃
+                document.body.innerHTML = `
+                <div style="text-align:center;padding-top:20%;background:#000;color:#0f0;height:100vh;font-family:monospace">
+                    <h1 style="font-size:5em">💀 终 局 💀</h1>
+                    <p>你已消耗 ${Math.round(performance.now()/1000)} 秒生命</p >
+                    <p>点击次数：${clicks} 次</p >
+                    <p>系统永久损坏</p >
+                    <button onclick="location.reload()" style="font-size:2em;margin-top:50px">再试一次？</button>
+                </div>`;
+            }
+        });
+
+        // 3. 升级折磨等级
+        function upgradeTorture(level) {
+            // 20次: 按钮分裂
+            if(level === 20) {
+                const btn2 = btn.cloneNode(true);
+                btn2.id = 'devil-btn-clone';
+                document.body.appendChild(btn2);
+            }
+            
+            // 50次: 强制全屏+鼠标捕获
+            if(level === 50) {
+                document.documentElement.requestFullscreen();
+                document.addEventListener('mousemove', (e) => {
+                    btn.style.left = (e.clientX-50) + 'px';
+                    btn.style.top = (e.clientY-25) + 'px';
+                });
+            }
+            
+            // 100次: 键盘干扰
+            if(level === 100) {
+                document.addEventListener('keydown', (e) => {
+                    e.preventDefault();
+                    playSound('error');
+                    // 随机打乱按键
+                    const keys = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890';
+                    document.title = `[系统崩溃] ${keys.charAt(Math.floor(Math.random()*keys.length))}键卡死`;
+                });
+            }
+        }
+
+        // 4. 死亡倒计时
+        function startCountdown(seconds) {
+            let time = seconds;
+            const countdownEl = document.getElementById('countdown');
+            
+            const timer = setInterval(() => {
+                const minutes = Math.floor(time / 60);
+                let secs = time % 60;
+                secs = secs < 10 ? '0'+secs : secs;
+                countdownEl.textContent = `${minutes}:${secs}`;
+                
+                // 最后30秒变红闪烁
+                if(time < 30) {
+                    countdownEl.style.animation = 'pulse 0.5s infinite';
+                    countdownEl.style.color = '#ff0000';
+                }
+                
+                if(time-- <= 0) {
+                    clearInterval(timer);
+                    // 触发终极惩罚
+                    document.body.innerHTML = `
+                    <div style="background:black;color:red;text-align:center;padding-top:20%">
+                        <h1 style="font-size:80px">💣 系统自毁完成 💣</h1>
+                        <p style="font-size:30px">所有数据已上传至暗网</p >
+                        <p>${new Date().toLocaleString()}</p >
+                    </div>`;
+                }
+            }, 1000);
+        }
+
+        // 5. 系统音效折磨
+        function playSound(type) {
+            const ctx = new (window.AudioContext || window.webkitAudioContext))();
+            const osc = ctx.createOscillator();
+            
+            switch(type) {
+                case 'error':
+                    osc.type = 'sawtooth';
+                    osc.frequency.setValueAtTime(300, ctx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(1000, ctx.currentTime + 0.1);
+                    break;
+            }
+            
+            const gain = ctx.createGain();
+            gain.gain.setValueAtTime(0.5, ctx.currentTime);
+            gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + 0.3);
+            
+            osc.connect(gain);
+            gain.connect(ctx.destination);
+            osc.start();
+            osc.stop(ctx.currentTime + 0.5);
+        }
+
+        // ====== 封锁系统级操作 ======
+        // 禁用右键
+        document.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            playSound('error');
+            alert('⚠️ 非法操作！已记录IP地址');
+        });
+        
+        // 禁用F12/刷新/关闭
+        document.addEventListener('keydown', e => {
+            if(e.key === 'F12' || (e.ctrlKey && e.key === 'r') || (e.altKey && e.key === 'F4')) {
+                e.preventDefault();
+                playSound('error');
+                // 触发伪蓝屏
+                bsod.style.display = 'block';
+                setTimeout(() => { bsod.style.display = 'none'; }, 3000);
+            }
+        });
+
+        // 防止页面关闭
+        window.addEventListener('beforeunload', (e) => {
+            e.preventDefault();
+            e.returnValue = '所有未保存数据将被销毁！确定离开？';
+            return e.returnValue;
+        });
+
+        // 启动地狱
+        window.onload = initHell;
+    </script>
+</body>
+</html>
